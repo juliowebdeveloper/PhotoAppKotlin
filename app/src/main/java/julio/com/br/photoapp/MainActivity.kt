@@ -2,24 +2,26 @@ package julio.com.br.photoapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.util.Log
-import android.view.View
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
+import com.github.aurae.retrofit2.LoganSquareConverterFactory
 import julio.com.br.photoapp.adapters.MainAdapter
+import julio.com.br.photoapp.api.CorreioApi
 import julio.com.br.photoapp.api.PhotoRetriever
+import julio.com.br.photoapp.models.Correio
 import julio.com.br.photoapp.models.Photo
 import julio.com.br.photoapp.models.PhotoList
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Retrofit
 
 class MainActivity : AppCompatActivity() , View.OnClickListener {
 
@@ -56,7 +58,28 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
 
         }
 
-        retriever.getPhotos(callback)
+
+        //retriever.getPhotos(callback)
+
+
+        val retrofit = Retrofit.Builder().baseUrl("http://correiosapi.apphb.com/")
+                .addConverterFactory(LoganSquareConverterFactory.create()).build()
+        val service = retrofit.create(CorreioApi::class.java)
+        var call = service.getDados()
+        call.enqueue(object: Callback<Correio>{
+            override fun onResponse(call: Call<Correio>?, response: Response<Correio>?) {
+                val correio: Correio? = response?.body()
+                Log.e("Correio", correio?.bairro)
+
+            }
+
+            override fun onFailure(call: Call<Correio>?, t: Throwable?) {
+                Log.e("Error", "Error")
+
+            }
+
+        })
+
 
       /*  var retriever2 = PhotoRetriever()
         retriever.getPhotos(object: Callback<PhotoList>{

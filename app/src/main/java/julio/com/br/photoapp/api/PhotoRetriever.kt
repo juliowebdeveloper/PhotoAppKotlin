@@ -1,7 +1,6 @@
 package julio.com.br.photoapp.api
 
 import julio.com.br.photoapp.models.PhotoList
-import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -18,7 +17,6 @@ private val service: PhotoApi
         val retrofit = Retrofit.Builder().baseUrl("http://www.pixabay.com/api/")
                 .addConverterFactory(GsonConverterFactory.create()).build()
         service = retrofit.create(PhotoApi::class.java)
-
     }
 
 
